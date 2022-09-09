@@ -1,0 +1,39 @@
+#include<iostream>
+#include<algorithm>
+using namespace std;
+int a[5005];
+struct node {
+    //n1,n2表示两个节点，l表示长度
+    int l, n1, n2;
+}b[200005];
+int find(int x) {
+    if (x == a[x])return x;
+    return find(a[x]);
+}
+//solve处理两边相连
+void solve(int x, int y) {
+    a[y] = a[x];
+}
+bool cmp(node x, node y) {
+    return x.l < y.l;
+}
+int main() {
+    int n, m;
+    cin >> n >> m;
+    for (int i = 1; i <= n; i++)a[i] = i;
+    for (int i = 0; i < m; i++)cin >> b[i].n1 >> b[i].n2 >> b[i].l;
+    sort(b, b + m, cmp);
+    int cnt = 0,i=0,ans=0;
+    while (cnt < n - 1&&i<m) {
+        int x1 = find(b[i].n1), y1 = find(b[i].n2);
+        if (x1 != y1) {
+            solve(x1, y1);
+            cnt++;
+            ans += b[i].l;
+        }
+        i++;
+    }
+    if (cnt == n - 1)cout << ans;
+    else cout << "orz";
+    return 0;
+}
